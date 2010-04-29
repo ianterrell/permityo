@@ -87,8 +87,8 @@ To use a custom implementation, simply define <tt>has_role?(role)</tt> on your u
 
 To change the settings, in the config block of your application, you can change the following settings from their defaults below.
 
-* <tt>config.constellation.authorization.mixin = :default</tt>
-* <tt>config.constellation.authorization.login_required_redirection = { :controller => 'session', :action => 'new' }</tt>
+* <tt>config.constellation.authorization.implementation = :default</tt>
+* <tt>config.constellation.authorization.login_required_redirection = { :controller => 'user_sessions', :action => 'new' }</tt>
 * <tt>config.constellation.authorization.permission_denied_redirection = ''</tt>
 * <tt>config.constellation.authorization.store_location_method = :store_location</tt>
 * <tt>config.constellation.authorization.current_user_method = :current_user</tt>
