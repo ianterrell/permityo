@@ -1,3 +1,16 @@
+=== 2.0.0 release
+
+This is a major change from the original Authorization plugin on which this engine is based.
+
+* Refactored into a Rails 3 engine as a gem
+* Removed global variable configuration in favor of application configuration
+* Added default implementation based on normal ActiveRecord relations and normal Ruby methods
+* Removed hardwired roles implementation:  this default implementation was unnecessary
+* Removed object roles implementations:  I found this overly complex and confusing for every case I've needed authorization,
+  but there's no reason it can't be provided by another gem.
+
+=== Old plugin's changelog below
+
 TO DO
 + Add Right model generator and DB-backed way of handling rights in addition to inlined "permit" checks
 + Added namespacing to @options instance variable to prevent possible name clashes
