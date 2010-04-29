@@ -83,18 +83,15 @@ In your Gemfile:
 To use the default implementation, simply call +acts_as_authorized_user+ from your User model, and +acts_as_authorizable+ from
 any model you wish to be authorizable.
 
-To use a custom implementation, simply define +has_role?(role)+ on your user and +accepts_role?(role, user)+ on the relevant
-models.
+To use a custom implementation, simply define <tt>has_role?(role)</tt> on your user and <tt>accepts_role?(role, user)</tt> on the relevant models. It is possible for another gem to provide alternate implementations for you, but none currently exist.
 
-It is possible for another gem to provide alternate implementations for you, but none currently exist.
+To change the settings, in the config block of your application, you can change the following settings from their defaults below.
 
-To change the settings, in the config block of your application, you can change the following settings from their defaults.
-
-* config.constellation.authorization.mixin = :default
-* config.constellation.authorization.login_required_redirection = { :controller => 'session', :action => 'new' }
-* config.constellation.authorization.permission_denied_redirection = ''
-* config.constellation.authorization.store_location_method = :store_location
-* config.constellation.authorization.current_user_method = :current_user
+* <tt>config.constellation.authorization.mixin = :default</tt>
+* <tt>config.constellation.authorization.login_required_redirection = { :controller => 'session', :action => 'new' }</tt>
+* <tt>config.constellation.authorization.permission_denied_redirection = ''</tt>
+* <tt>config.constellation.authorization.store_location_method = :store_location</tt>
+* <tt>config.constellation.authorization.current_user_method = :current_user</tt>
 
 === Jumpstarting with the default
 
