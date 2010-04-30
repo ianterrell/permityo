@@ -1,34 +1,16 @@
-<i>This Rails 3 engine is a highly modified fork of the excellent authorization plugin by Bill Katz, which I've used fondly for years.</i>
+<i>This Rails 3 engine is a highly modified fork of the excellent authorization plugin by Bill Katz, which I've used fondly for years.  It keeps the stellar controller-level DSL but reimplements the model-level scheme for determining authorization.</i>
 
 = Constellation Authorization
 
-This engine provides a flexible way to add authorization to Rails 3 applications.
+This engine provides a flexible way to add authorization to Rails 3 applications.  It plays nicely with whatever authentication system you'd like to use.
 
-The authorization process decides whether a user is allowed access to some
-feature.  It is distinct from the authentication process, which tries to
-confirm a user is authentic, not an imposter. There are many authentication
-systems available for Rails, e.g., restful_authentication and Authlogic. This
-authorization system will play nicely with them as long as some simple
-requirements are met:
+The gem is composed of two parts:  a controller and view level DSL and a default implementation of the model tier methods the DSL relies on.
 
-1. User objects are available that implement a has_role?(role,
-   authorizable_object = nil) method. This requirement can be easily
-   handled by using acts_as_authorized_user in the User-like class.
+== Installation
 
-2. If you want to use "role of model" authorization expressions, like "owner of
-   resource" or "eligible for :award", then your models with roles must
-   implement an accepts_role?(role, user) method. This requirement can
-   be handled by using acts_as_authorizable in the model class.
-
-The authorization plugin provides the following:
-
-* A simple way of checking authorization at either the class or instance method
-  level using #permit and #permit?
-
-* Authorization based on the relationships already in your application's model tier.
-
-* If you wish for different behavior, you can override the has_role? and accepts_role? methods
-  by yourself or by using another gem that provides them (although there are none as of this writing).
+In your Gemfile:
+  
+  gem "constellation-authorization"
 
 == Example Usage
 
@@ -46,59 +28,77 @@ The authorization plugin provides the following:
       end
     end
 
-    def find_apprentice
-      @founder = User.find_by_name('matz')
-      permit "'inner circle' of :founder" do
-        if request.post?
-          apprentice = User.find_by_skillset(params[:uber_hacker])
-          ruby_community = Group.find_by_name('Ruby')
-          ruby_community.accepts_role 'yarv_builder', apprentice
-        end
-      end
-    end
-
     def rails_conf
-      @meeting = Meeting.find_by_name('RailsConf')
+      @meeting = Meeting.find_by_name 'RailsConf'
       permit "attendees of :meeting or swedish_mensa_supermodels" do
         venue = Hotel.find_by_name("Wyndham O'Hare")
-        current_user.is_traveller_to venue
         if permit? "traveller to :venue and not speaker"
           Partay.all_night_long
-          @misdeeds = current_user.is_participant_in_what
         end
       end
     end
 
   end
 
+== Controller and View DSL
 
-== Installation
+There are three flavors of <tt>permit</tt>:
+1. <tt>permit</tt> used in a controller declaratively, which acts as a <tt>before_filter</tt>
+2. <tt>permit</tt> used as a method with a block, which only executes the block if authorized
+3. <tt>permit?</tt> used as a method to return true if authorized
 
-In your Gemfile:
-  
-  gem "constellation-authorization"
+The DSL has two types of usage:
+1. Model-independent user roles, as in <tt>permit("admin")</tt>
+2. Model-dependent roles, as in <tt>permit("sysadmin of :website")</tt>
+
+Phrases in the DSL can be joined with <tt>and</tt> and <tt>or</tt>, and many prepositions can be used.
+
+== Model Methods
+
+There are two model methods used by this system which correspond to the two types of usage in the DSL:
+
+1. Model-independent user roles, such as <tt>permit("admin")</tt>, determine if a user has the role by calling the <tt>has_role?(role)</tt> method on the user object.
+2. Model-dependent roles, such as <tt>permit("sysadmin of :website")</tt>, determine if the the user has the role by calling the  <tt>accepts_role?(role, user)</tt> method on the model object in question.
+
+These methods can be implemented in any fashion you choose.  For convenience, a default implementation is provided.  
+
+== Default Implementation
+
+The default implementation for <tt>has_role?(role)</tt> delegates to the method <tt>role?</tt>.  For instance, <tt>permit("admin")</tt> will be authorized if <tt>user.admin?</tt> is not nil and not false.  If the user object does not respond to <tt>:admin?</tt>, it will not be authorized.
+
+The default implementation for <tt>accepts_role?(role, user)</tt> is similar, but checks for both singular and plural methods.  For instance, <tt>permit("sysadmin of :website")</tt> will return true if either <tt>website.sysadmin == user</tt> or <tt>website.sysadmins.include?(user)</tt>.
 
 == Configuration
 
-To use the default implementation, simply call +acts_as_authorized_user+ from your User model, and +acts_as_authorizable+ from
-any model you wish to be authorizable.
+To use the default implementation, simply call <tt>acts_as_authorized_user</tt> from your User model, and <tt>acts_as_authorizable</tt> from any model you wish to be authorizable.  To use a custom implementation, simply define <tt>has_role?(role)</tt> on your user and <tt>accepts_role?(role, user)</tt> on the relevant models. It is possible for another gem to provide alternate implementations for you, but none currently exist.
 
-To use a custom implementation, simply define <tt>has_role?(role)</tt> on your user and <tt>accepts_role?(role, user)</tt> on the relevant models. It is possible for another gem to provide alternate implementations for you, but none currently exist.
+All of the messages presented the user are configurable and translatable.  To change the messages or provide a new translation, simply add the <tt>constellation.authorization.permission_denied</tt> and <tt>constellation.authorization.login_required</tt> keys to your locale file.  See <tt>config/locals/en.yml</tt> as an example.
 
-To change the settings, in the config block of your application, you can change the following settings from their defaults below.
+Many other settings are configurable.  To change them, simply set the following settings in your application's configuration block to what you desire.
 
-* <tt>config.constellation.authorization.implementation = :default</tt>
-* <tt>config.constellation.authorization.login_required_redirection = { :controller => 'user_sessions', :action => 'new' }</tt>
-* <tt>config.constellation.authorization.permission_denied_redirection = ''</tt>
-* <tt>config.constellation.authorization.store_location_method = :store_location</tt>
-* <tt>config.constellation.authorization.current_user_method = :current_user</tt>
+=== Settings
+
+  config.constellation.authorization.implementation = :default
+  
+This is the implementation of the model tier methods to use.  If it is <tt>:default</tt> the methods  <tt>acts_as_authorized_user</tt> and <tt>acts_as_authorizable</tt> will provide the default implementation described above.  It is possible for other gems to provide other implementations; if this happens you would change this key to select the one you desire.
+
+  config.constellation.authorization.login_required_redirection = { :controller => 'user_sessions', :action => 'new' }
+  
+This should be set to the path or hash of where the user should be redirected if they are not currently logged in.
+
+  config.constellation.authorization.permission_denied_redirection = ''
+  
+This should be set to the path or hash of where the user should be redirected if they are not authorized to perform the action they attempted.
+
+  config.constellation.authorization.store_location_method = :store_location
+  
+This is the name of the method that should be called to store the URI the unauthenticated user requested so that they can be redirected back to it after login (your authentication system will provide this).
+
+  config.constellation.authorization.current_user_method = :current_user
+  
+This is the name of the method that provides the currently logged in user for authorization purposes.
 
 === Jumpstarting with the default
-
-Now we need to add the methods needed by each of your models that will
-participate in role based authorization. Typically these models fall into
-two categories, the User model, and all other models that will have
-roles available for use.
 
 For a typical installation you would add both mixins to your User model.
 
@@ -119,9 +119,7 @@ on role you would add just the acts_as_authorizable mixin like this:
 
   ...
 
-You are done with the configuration!
-
-== The Specifics
+== More Details
 
 === permit and permit?
 
@@ -227,7 +225,7 @@ denied. You cannot access the requested page.'
 
 We expect the application to provide the following methods:
 
-==== #current_user (configurable)
+==== #current_user (method name configurable)
 
 Returns some user object, like an instance of my favorite class,
 <tt>UserFromMars</tt>.  A <tt>user</tt> object, from the Authorization
@@ -245,7 +243,7 @@ model that is used in an expression, we assume that it provides the
 
 Note that <tt>user</tt> can be <tt>nil</tt> if <tt>:allow_guests => true</tt>.
 
-==== #store_location (optional, configurable)
+==== #store_location (optional, method name configurable)
 
 This method will be called if authorization fails and the user is about to be
 redirected to the login action. This allows the application to return to the
