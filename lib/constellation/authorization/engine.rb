@@ -11,7 +11,8 @@ module Constellation
       config.constellation.authorization.permission_denied_redirection = ''
       config.constellation.authorization.store_location_method = :store_location
       config.constellation.authorization.current_user_method = :current_user
-      
+      config.constellation.authorization.login_required_flash = :notice
+      config.constellation.authorization.permission_denied_flash = :notice
       
       initializer "constellation.authorization.default" do |app|
         ActionController::Base.send :include, Constellation::Authorization::Base

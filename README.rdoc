@@ -98,6 +98,11 @@ This is the name of the method that should be called to store the URI the unauth
   
 This is the name of the method that provides the currently logged in user for authorization purposes.
 
+  config.constellation.authorization.login_required_flash = :notice
+  config.constellation.authorization.permission_denied_flash = :notice
+  
+These are the names of the <tt>flash</tt> keys to be used to store the authorization messages.  Many people like <tt>:notice</tt> but some prefer <tt>:error</tt> or <tt>:alert</tt>.
+
 === Jumpstarting with the default
 
 For a typical installation you would add both mixins to your User model.

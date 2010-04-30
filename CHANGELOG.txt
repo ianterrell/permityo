@@ -1,3 +1,8 @@
+=== 2.0.2 release
+
+* Added I18n to messages
+* Made flash keys configurable
+
 === 2.0.1 release
 
 This is a major change from the original Authorization plugin on which this engine is based.
