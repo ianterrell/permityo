@@ -1,5 +1,7 @@
 require 'constellation/authorization'
 require 'rails'
+require 'action_controller'
+require 'action_view'
 
 module Constellation
   module Authorization
@@ -18,6 +20,7 @@ module Constellation
         ActionController::Base.send :include, Constellation::Authorization::Base
         ActionView::Base.send :include, Constellation::Authorization::Base::ControllerInstanceMethods
         if app.config.constellation.authorization.implementation == :default
+          require 'active_record'
           ActiveRecord::Base.send :include, 
             Constellation::Authorization::Default::UserExtensions, 
             Constellation::Authorization::Default::ModelExtensions 
