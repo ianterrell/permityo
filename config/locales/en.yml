@@ -1,0 +1,5 @@
+en:
+  constellation:
+    authorization:
+      permission_denied: "Permission denied. You cannot access the requested page."
+      login_required: "Login is required to access the requested page."
