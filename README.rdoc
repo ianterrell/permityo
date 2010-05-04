@@ -10,7 +10,9 @@ The gem is composed of two parts:  a controller and view level DSL and a default
 
 In your Gemfile:
   
-  gem "constellation-authorization"
+  gem "constellation-authorization", :require => "constellation/authorization"
+  
+If you're using a Constellation Software gem that depends on this one, the above won't even be necessary.
 
 == Example Usage
 
@@ -72,7 +74,7 @@ The default implementation for <tt>accepts_role?(role, user)</tt> is similar, bu
 
 To use the default implementation, simply call <tt>acts_as_authorized_user</tt> from your User model, and <tt>acts_as_authorizable</tt> from any model you wish to be authorizable.  To use a custom implementation, simply define <tt>has_role?(role)</tt> on your user and <tt>accepts_role?(role, user)</tt> on the relevant models. It is possible for another gem to provide alternate implementations for you, but none currently exist.
 
-All of the messages presented the user are configurable and translatable.  To change the messages or provide a new translation, simply add the <tt>constellation.authorization.permission_denied</tt> and <tt>constellation.authorization.login_required</tt> keys to your locale file.  See <tt>config/locals/en.yml</tt> as an example.
+All of the messages presented to the user are configurable and translatable.  To change the messages or provide a new translation, simply add the <tt>constellation.authorization.permission_denied</tt> and <tt>constellation.authorization.login_required</tt> keys to your locale file.  See <tt>config/locals/en.yml</tt> as an example.
 
 Many other settings are configurable.  To change them, simply set the following settings in your application's configuration block to what you desire.
 
@@ -284,3 +286,7 @@ Roles specified with "of model" designation:
 
 3. Once the model object is determined, we pass the role and user (determined
    in the manner above) to <tt>model.accepts_role?</tt>
+   
+=== Copyright
+
+Copyright (c) 2010 Constellation Software for code version 2.0 and above.  Code originating in prior versions is copyright their respective authors.
