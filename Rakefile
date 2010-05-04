@@ -26,7 +26,7 @@ spec = Gem::Specification.new do |gem|
   gem.homepage = "http://github.com/constellationsoft/authorization"
   gem.authors = ["Bill Katz", "Ian Terrell", "Jeff Bozek"]
   gem.files = Dir["{lib}/**/*.rb", "{app}/**/*", "{config}/**/*"]
-  gem.version = "2.0.2"
+  gem.version = "2.0.3"
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|
