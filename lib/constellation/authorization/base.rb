@@ -76,16 +76,28 @@ module Constellation
         # Handle redirection within permit if authorization is denied.
         def handle_redirection
           return if not self.respond_to?(:redirect_to)
-
-          # Store url in session for return if this is available from
-          # authentication
-          send(Rails.application.config.constellation.authorization.store_location_method) if respond_to? Rails.application.config.constellation.authorization.store_location_method
+          # Store url in session for return if this is available from authentication
+          send(Rails.application.config.constellation.authorization.store_location_method) if respond_to?(Rails.application.config.constellation.authorization.store_location_method)
           if @current_user && @current_user != :false
-            flash[Rails.application.config.constellation.authorization.permission_denied_flash] = @options[:permission_denied_message] || t('constellation.authorization.permission_denied')
-            redirect_to @options[:permission_denied_redirection] || (self.respond_to?(:permission_denied_redirection) ? permission_denied_redirection : Rails.application.config.constellation.authorization.permission_denied_redirection)
+            respond_to do |format|
+              format.html do
+                flash[Rails.application.config.constellation.authorization.permission_denied_flash] = @options[:permission_denied_message] || t('constellation.authorization.permission_denied')
+                redirect_to @options[:permission_denied_redirection] || (self.respond_to?(:permission_denied_redirection) ? permission_denied_redirection : Rails.application.config.constellation.authorization.permission_denied_redirection)
+              end
+              format.all do
+                render :text => nil, :status => :forbidden
+              end
+            end
           else
-            flash[Rails.application.config.constellation.authorization.login_required_flash] = @options[:login_required_message] || t('constellation.authorization.login_required')
-            redirect_to @options[:login_required_redirection] || (self.respond_to?(:login_required_redirection) ? login_required_redirection : Rails.application.config.constellation.authorization.login_required_redirection)
+            respond_to do |format|
+              format.html do
+                flash[Rails.application.config.constellation.authorization.login_required_flash] = @options[:login_required_message] || t('constellation.authorization.login_required')
+                redirect_to @options[:login_required_redirection] || (self.respond_to?(:login_required_redirection) ? login_required_redirection : Rails.application.config.constellation.authorization.login_required_redirection) 
+              end
+              format.all do
+                render :text => nil, :status => :unauthorized
+              end
+            end
           end
           false  # Want to short-circuit the filters
         end
