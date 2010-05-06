@@ -10,11 +10,11 @@ module Constellation
       config.constellation.authorization = ActiveSupport::OrderedOptions.new
       config.constellation.authorization.root = __FILE__.gsub('/lib/constellation/authorization/engine.rb', '')
       config.constellation.authorization.implementation = :default
-      config.constellation.authorization.login_required_redirection = { :controller => 'user_sessions', :action => 'new' }
+      config.constellation.authorization.require_user_redirection = { :controller => 'user_sessions', :action => 'new' }
       config.constellation.authorization.permission_denied_redirection = ''
       config.constellation.authorization.store_location_method = :store_location
       config.constellation.authorization.current_user_method = :current_user
-      config.constellation.authorization.login_required_flash = :notice
+      config.constellation.authorization.require_user_flash = :notice
       config.constellation.authorization.permission_denied_flash = :notice
       
       initializer "constellation.authorization.default" do |app|

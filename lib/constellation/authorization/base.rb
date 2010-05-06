@@ -99,16 +99,16 @@ module Constellation
           else
             respond_to do |format|
               format.html do
-                if self.respond_to? :handle_login_required_redirection_for_html
-                  handle_login_required_redirection_for_html
+                if self.respond_to? :handle_require_user_redirection_for_html
+                  handle_require_user_redirection_for_html
                 else
-                  flash[Rails.application.config.constellation.authorization.login_required_flash] = @options[:login_required_message] || t('constellation.authorization.login_required')
-                  redirect_to @options[:login_required_redirection] || (self.respond_to?(:login_required_redirection) ? login_required_redirection : Rails.application.config.constellation.authorization.login_required_redirection) 
+                  flash[Rails.application.config.constellation.authorization.require_user_flash] = @options[:require_user_message] || t('constellation.authorization.require_user')
+                  redirect_to @options[:require_user_redirection] || (self.respond_to?(:require_user_redirection) ? require_user_redirection : Rails.application.config.constellation.authorization.require_user_redirection) 
                 end
               end
               format.all do
-                if self.respond_to? :"handle_login_required_redirection_for_#{params[:format]}"
-                  self.send :"handle_login_required_redirection_for_#{params[:format]}"
+                if self.respond_to? :"handle_require_user_redirection_for_#{params[:format]}"
+                  self.send :"handle_require_user_redirection_for_#{params[:format]}"
                 else
                   render :text => nil, :status => :unauthorized
                 end

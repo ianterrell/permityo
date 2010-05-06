@@ -9,7 +9,7 @@ protected
     User.new
   end
 
-  def handle_login_required_redirection_for_html
+  def handle_require_user_redirection_for_html
     render :text => nil, :status => :ok
   end
   
@@ -17,7 +17,7 @@ protected
     render :text => nil, :status => :ok
   end
 
-  def handle_login_required_redirection_for_xml
+  def handle_require_user_redirection_for_xml
     render :text => nil, :status => :ok
   end
   
@@ -25,7 +25,7 @@ protected
     render :text => nil, :status => :ok
   end
   
-  def handle_login_required_redirection_for_json
+  def handle_require_user_redirection_for_json
     render :text => nil, :status => :ok
   end
   
@@ -33,7 +33,7 @@ protected
     render :text => nil, :status => :ok
   end
   
-  def handle_login_required_redirection_for_js
+  def handle_require_user_redirection_for_js
     render :text => nil, :status => :ok
   end
   

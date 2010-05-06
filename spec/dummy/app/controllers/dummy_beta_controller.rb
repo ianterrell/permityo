@@ -10,7 +10,7 @@ protected
     @logged_in_user
   end
   
-  def login_required_redirection
+  def require_user_redirection
     "/controller_specified_login"
   end
   
