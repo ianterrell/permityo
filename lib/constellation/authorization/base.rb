@@ -85,7 +85,11 @@ module Constellation
                 redirect_to @options[:permission_denied_redirection] || (self.respond_to?(:permission_denied_redirection) ? permission_denied_redirection : Rails.application.config.constellation.authorization.permission_denied_redirection)
               end
               format.all do
-                render :text => nil, :status => :forbidden
+                if self.respond_to? :"handle_permission_denied_redirection_for_#{params[:format]}"
+                  self.send :"handle_permission_denied_redirection_for_#{params[:format]}"
+                else
+                  render :text => nil, :status => :forbidden
+                end
               end
             end
           else
@@ -95,7 +99,11 @@ module Constellation
                 redirect_to @options[:login_required_redirection] || (self.respond_to?(:login_required_redirection) ? login_required_redirection : Rails.application.config.constellation.authorization.login_required_redirection) 
               end
               format.all do
-                render :text => nil, :status => :unauthorized
+                if self.respond_to? :"handle_login_required_redirection_for_#{params[:format]}"
+                  self.send :"handle_login_required_redirection_for_#{params[:format]}"
+                else
+                  render :text => nil, :status => :unauthorized
+                end
               end
             end
           end
