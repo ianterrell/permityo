@@ -82,10 +82,10 @@ module Constellation
           send(Rails.application.config.constellation.authorization.store_location_method) if respond_to? Rails.application.config.constellation.authorization.store_location_method
           if @current_user && @current_user != :false
             flash[Rails.application.config.constellation.authorization.permission_denied_flash] = @options[:permission_denied_message] || t('constellation.authorization.permission_denied')
-            redirect_to @options[:permission_denied_redirection] || Rails.application.config.constellation.authorization.permission_denied_redirection
+            redirect_to @options[:permission_denied_redirection] || (self.respond_to?(:permission_denied_redirection) ? permission_denied_redirection : Rails.application.config.constellation.authorization.permission_denied_redirection)
           else
             flash[Rails.application.config.constellation.authorization.login_required_flash] = @options[:login_required_message] || t('constellation.authorization.login_required')
-            redirect_to @options[:login_required_redirection] || Rails.application.config.constellation.authorization.login_required_redirection
+            redirect_to @options[:login_required_redirection] || (self.respond_to?(:login_required_redirection) ? login_required_redirection : Rails.application.config.constellation.authorization.login_required_redirection)
           end
           false  # Want to short-circuit the filters
         end

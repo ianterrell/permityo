@@ -1,7 +1,4 @@
 Dummy::Application.routes.draw do |map|
-  match "do_good" => "dummy#do_good"
-  match "do_evil" => "dummy#do_evil"
-    
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -57,5 +54,6 @@ Dummy::Application.routes.draw do |map|
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
-  # match ':controller(/:action(/:id(.:format)))'
+  match ':controller(/:action(.:format))'
+  match ':controller(/:action(/:id(.:format)))'
 end
