@@ -80,9 +80,13 @@ module Constellation
           send(Rails.application.config.constellation.authorization.store_location_method) if respond_to?(Rails.application.config.constellation.authorization.store_location_method)
           if @current_user && @current_user != :false
             respond_to do |format|
-              format.html do
-                flash[Rails.application.config.constellation.authorization.permission_denied_flash] = @options[:permission_denied_message] || t('constellation.authorization.permission_denied')
-                redirect_to @options[:permission_denied_redirection] || (self.respond_to?(:permission_denied_redirection) ? permission_denied_redirection : Rails.application.config.constellation.authorization.permission_denied_redirection)
+              format.html do                
+                if self.respond_to? :handle_permission_denied_redirection_for_html
+                  handle_permission_denied_redirection_for_html
+                else
+                  flash[Rails.application.config.constellation.authorization.permission_denied_flash] = @options[:permission_denied_message] || t('constellation.authorization.permission_denied')
+                  redirect_to @options[:permission_denied_redirection] || (self.respond_to?(:permission_denied_redirection) ? permission_denied_redirection : Rails.application.config.constellation.authorization.permission_denied_redirection)
+                end
               end
               format.all do
                 if self.respond_to? :"handle_permission_denied_redirection_for_#{params[:format]}"
@@ -95,8 +99,12 @@ module Constellation
           else
             respond_to do |format|
               format.html do
-                flash[Rails.application.config.constellation.authorization.login_required_flash] = @options[:login_required_message] || t('constellation.authorization.login_required')
-                redirect_to @options[:login_required_redirection] || (self.respond_to?(:login_required_redirection) ? login_required_redirection : Rails.application.config.constellation.authorization.login_required_redirection) 
+                if self.respond_to? :handle_login_required_redirection_for_html
+                  handle_login_required_redirection_for_html
+                else
+                  flash[Rails.application.config.constellation.authorization.login_required_flash] = @options[:login_required_message] || t('constellation.authorization.login_required')
+                  redirect_to @options[:login_required_redirection] || (self.respond_to?(:login_required_redirection) ? login_required_redirection : Rails.application.config.constellation.authorization.login_required_redirection) 
+                end
               end
               format.all do
                 if self.respond_to? :"handle_login_required_redirection_for_#{params[:format]}"

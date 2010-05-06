@@ -9,6 +9,14 @@ protected
     User.new
   end
 
+  def handle_login_required_redirection_for_html
+    render :text => nil, :status => :ok
+  end
+  
+  def handle_permission_denied_redirection_for_html
+    render :text => nil, :status => :ok
+  end
+
   def handle_login_required_redirection_for_xml
     render :text => nil, :status => :ok
   end
