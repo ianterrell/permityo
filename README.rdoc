@@ -78,6 +78,45 @@ All of the messages presented to the user are configurable and translatable.  To
 
 Many other settings are configurable.  To change them, simply set the following settings in your application's configuration block to what you desire.
 
+=== Redirection
+
+This engine handles "redirection" for two types of cases:  1) when the user is not logged in (current_user == nil) and 2) when the user is unauthorized.
+
+When a user is requesting HTML, the engine sets the flash and redirects the user.  The flash key used, the message given, and where the user is redirected to are all easily configurable using settings and locale files.  Further, where the user is redirected to can be overridden on a controller-by-controller basis by providing the methods <tt>login_required_redirection</tt> or <tt>permission_denied_redirection</tt>.  This allows you to redirect to different locations in different parts of your application, for instance:
+
+  class Admin::ProtectedController < ApplicationController
+    permit "admin"
+    
+  protected
+    def login_required_redirection
+      "/admin/signin"
+    end
+    
+    def permission_denied_redirection
+      "/admin/"
+    end
+  end
+  
+When a user is requesting something else -- like XML, JSON, or JS -- this engine returns a blank body with a 401 (unauthorized) status code for the login required case, and a 403 (forbidden) status code for the permission denied case.  In this way if you provide an API or have a lot of AJAX on your site the calling clients can get more relevant information than a 302 redirect.
+
+You can override how the "redirection" is handled for each format by implementing the controller methods <tt>handle_login_required_redirection_for_#{format}</tt> and <tt>handle_permission_denied_redirection_for_#{format}</tt> for each given format, like so:
+
+  def handle_login_required_redirection_for_html
+    render :text => nil, :status => :not_acceptable
+  end
+
+  def handle_permission_denied_redirection_for_html
+    render :text => nil, :status => :not_acceptable
+  end
+
+  def handle_login_required_redirection_for_xml
+    render :text => nil, :status => :not_acceptable
+  end
+
+  def handle_permission_denied_redirection_for_xml
+    render :text => nil, :status => :not_acceptable
+  end
+
 === Settings
 
   config.constellation.authorization.implementation = :default
