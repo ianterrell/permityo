@@ -12,8 +12,8 @@ module PermitYo
     config.permit_yo.permission_denied_redirection = ''
     config.permit_yo.store_location_method = :store_location
     config.permit_yo.current_user_method = :current_user
-    config.permit_yo.require_user_flash = :notice
-    config.permit_yo.permission_denied_flash = :notice
+    config.permit_yo.require_user_flash = :alert
+    config.permit_yo.permission_denied_flash = :alert
     
     initializer "permit_yo.default" do |app|
       ActionController::Base.send :include, PermitYo::Base

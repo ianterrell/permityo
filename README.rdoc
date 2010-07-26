@@ -137,8 +137,8 @@ This is the name of the method that should be called to store the URI the unauth
   
 This is the name of the method that provides the currently logged in user for authorization purposes.
 
-  config.permit_yo.require_user_flash = :notice
-  config.permit_yo.permission_denied_flash = :notice
+  config.permit_yo.require_user_flash = :alert
+  config.permit_yo.permission_denied_flash = :alert
   
 These are the names of the <tt>flash</tt> keys to be used to store the authorization messages.  Many people like <tt>:notice</tt> but some prefer <tt>:error</tt> or <tt>:alert</tt>.
 
