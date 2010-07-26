@@ -1,6 +1,6 @@
 <i>This Rails 3 engine is a highly modified fork of the excellent authorization plugin by Bill Katz, which I've used fondly for years.  It keeps the stellar controller-level DSL but reimplements the model-level scheme for determining authorization.</i>
 
-= Constellation Authorization
+= Permit, Yo
 
 This engine provides a flexible way to add authorization to Rails 3 applications.  It plays nicely with whatever authentication system you'd like to use.
 
@@ -10,9 +10,7 @@ The gem is composed of two parts:  a controller and view level DSL and a default
 
 In your Gemfile:
   
-  gem "constellation-authorization", :require => "constellation/authorization"
-  
-If you're using a Constellation Software gem that depends on this one, the above won't even be necessary.
+  gem "permit_yo"
 
 == Example Usage
 
@@ -74,7 +72,7 @@ The default implementation for <tt>accepts_role?(role, user)</tt> is similar, bu
 
 To use the default implementation, simply call <tt>acts_as_authorized_user</tt> from your User model, and <tt>acts_as_authorizable</tt> from any model you wish to be authorizable.  To use a custom implementation, simply define <tt>has_role?(role)</tt> on your user and <tt>accepts_role?(role, user)</tt> on the relevant models. It is possible for another gem to provide alternate implementations for you, but none currently exist.
 
-All of the messages presented to the user are configurable and translatable.  To change the messages or provide a new translation, simply add the <tt>constellation.authorization.permission_denied</tt> and <tt>constellation.authorization.require_user</tt> keys to your locale file.  See <tt>config/locals/en.yml</tt> as an example.
+All of the messages presented to the user are configurable and translatable.  To change the messages or provide a new translation, simply add the <tt>permit_yo.permission_denied</tt> and <tt>permit_yo.require_user</tt> keys to your locale file.  See <tt>config/locals/en.yml</tt> as an example.
 
 Many other settings are configurable.  To change them, simply set the following settings in your application's configuration block to what you desire.
 
@@ -119,28 +117,28 @@ You can override how the "redirection" is handled for each format by implementin
 
 === Settings
 
-  config.constellation.authorization.implementation = :default
+  config.permit_yo.implementation = :default
   
 This is the implementation of the model tier methods to use.  If it is <tt>:default</tt> the methods  <tt>acts_as_authorized_user</tt> and <tt>acts_as_authorizable</tt> will provide the default implementation described above.  It is possible for other gems to provide other implementations; if this happens you would change this key to select the one you desire.
 
-  config.constellation.authorization.require_user_redirection = { :controller => 'user_sessions', :action => 'new' }
+  config.permit_yo.require_user_redirection = { :controller => 'user_sessions', :action => 'new' }
   
 This should be set to the path or hash of where the user should be redirected if they are not currently logged in.
 
-  config.constellation.authorization.permission_denied_redirection = ''
+  config.permit_yo.permission_denied_redirection = ''
   
 This should be set to the path or hash of where the user should be redirected if they are not authorized to perform the action they attempted.
 
-  config.constellation.authorization.store_location_method = :store_location
+  config.permit_yo.store_location_method = :store_location
   
 This is the name of the method that should be called to store the URI the unauthenticated user requested so that they can be redirected back to it after login (your authentication system will provide this).
 
-  config.constellation.authorization.current_user_method = :current_user
+  config.permit_yo.current_user_method = :current_user
   
 This is the name of the method that provides the currently logged in user for authorization purposes.
 
-  config.constellation.authorization.require_user_flash = :notice
-  config.constellation.authorization.permission_denied_flash = :notice
+  config.permit_yo.require_user_flash = :notice
+  config.permit_yo.permission_denied_flash = :notice
   
 These are the names of the <tt>flash</tt> keys to be used to store the authorization messages.  Many people like <tt>:notice</tt> but some prefer <tt>:error</tt> or <tt>:alert</tt>.
 
@@ -328,4 +326,4 @@ Roles specified with "of model" designation:
    
 === Copyright
 
-Copyright (c) 2010 Constellation Software for code version 2.0 and above.  Code originating in prior versions is copyright their respective authors.
+Copyright (c) 2010 Ian Terrell for code version 2.0 and above.  Code originating in prior versions is copyright their respective authors.

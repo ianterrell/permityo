@@ -12,7 +12,7 @@ describe DummyController do
   it "should not allow dogooders to do evil" do
     get :do_evil
     flash[:notice].should == "Permission denied. You cannot access the requested page."
-    response.should redirect_to(Rails.application.config.constellation.authorization.permission_denied_redirection)
+    response.should redirect_to(Rails.application.config.permit_yo.permission_denied_redirection)
   end
   
   it "should know how to permit? things" do

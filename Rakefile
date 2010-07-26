@@ -12,21 +12,21 @@ task :default => :spec
 
 Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'Authorization'
+  rdoc.title    = 'Permit, Yo'
   rdoc.options << '--line-numbers' << '--inline-source'
   rdoc.rdoc_files.include('README.rdoc')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
 spec = Gem::Specification.new do |gem|
-  gem.name = "constellation-authorization"
-  gem.summary = "A module for managing authorization."
-  gem.description = "A module for managing authorization."
-  gem.email = "ian@constellationsoft.com;jeff@constellationsoft.com"
-  gem.homepage = "http://github.com/constellationsoft/authorization"
-  gem.authors = ["Bill Katz", "Ian Terrell", "Jeff Bozek"]
+  gem.name = "permityo"
+  gem.summary = "A Rails 3 engine for managing authorization."
+  gem.description = "An engine that provides authorization for Rails 3 apps."
+  gem.email = "ian.terrell@gmail.com"
+  gem.homepage = "http://github.com/ianterrell/permityo"
+  gem.authors = ["Bill Katz", "Ian Terrell"]
   gem.files = Dir["{lib}/**/*.rb", "{app}/**/*", "{config}/**/*"]
-  gem.version = "2.0.5"
+  gem.version = "2.1"
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|

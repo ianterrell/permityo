@@ -7,7 +7,7 @@ require "action_view/railtie"
 require "action_mailer/railtie"
 
 Bundler.require
-require "constellation/authorization"
+require "permit_yo"
 
 module Dummy
   class Application < Rails::Application

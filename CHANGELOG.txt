@@ -1,3 +1,8 @@
+=== 2.1
+
+* Renamed to Permit, Yo
+* All Constellation code removed
+
 === 2.0.3 release
 
 * Sets gem root in config for Constellation Base to use.

@@ -1,5 +1,4 @@
 en:
-  constellation:
-    authorization:
-      permission_denied: "Permission denied. You cannot access the requested page."
-      require_user: "Login is required to access the requested page."
+  permit_yo:
+    permission_denied: "Permission denied. You cannot access the requested page."
+    require_user: "Login is required to access the requested page."
