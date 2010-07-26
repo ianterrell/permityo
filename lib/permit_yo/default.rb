@@ -31,7 +31,9 @@ module PermitYo
 
       module InstanceMethods
         def accepts_role?(role, user)
-          if self.respond_to? role
+          if role == "self"
+            self == user
+          elsif self.respond_to? role
             self.send(role) == user 
           elsif self.respond_to? role.pluralize
             self.send(role.pluralize).include?(user)
