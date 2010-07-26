@@ -19,7 +19,7 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
 end
 
 spec = Gem::Specification.new do |gem|
-  gem.name = "permityo"
+  gem.name = "permit_yo"
   gem.summary = "A Rails 3 engine for managing authorization."
   gem.description = "An engine that provides authorization for Rails 3 apps."
   gem.email = "ian.terrell@gmail.com"
