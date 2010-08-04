@@ -1,4 +1,6 @@
 require 'permit_yo'
+require 'permit_yo/base'
+require 'permit_yo/default'
 require 'rails'
 require 'action_controller'
 require 'action_view'

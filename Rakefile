@@ -26,7 +26,7 @@ spec = Gem::Specification.new do |gem|
   gem.homepage = "http://github.com/ianterrell/permityo"
   gem.authors = ["Bill Katz", "Ian Terrell"]
   gem.files = Dir["{lib}/**/*.rb", "{app}/**/*", "{config}/**/*"]
-  gem.version = "2.1.2"
+  gem.version = "2.1.3"
 end
 
 Rake::GemPackageTask.new(spec) do |pkg|
