@@ -5,14 +5,14 @@ describe DummyBetaController do
     it "should set the flash and redirect when not logged in" do
       @controller.logged_in_user = nil
       get :index
-      flash[:notice].should == "Login is required to access the requested page."
+      flash[:alert].should == "Login is required to access the requested page."
       response.should redirect_to("/controller_specified_login")
     end
   
     it "should set the flash and redirect when unauthorized" do
       @controller.logged_in_user = User.new
       get :index
-      flash[:notice].should == "Permission denied. You cannot access the requested page."
+      flash[:alert].should == "Permission denied. You cannot access the requested page."
       response.should redirect_to("/controller_specified_permission_denied")
     end
   end
@@ -23,7 +23,7 @@ describe DummyBetaController do
       get :index, :format => "xml"
       response.status.should == 401
       response.body.should be_blank
-      flash[:notice].should be_nil
+      flash[:alert].should be_nil
     end
   
     it "should not set the flash and should return a blank body with a 403 code when unauthorized" do
@@ -31,7 +31,7 @@ describe DummyBetaController do
       get :index, :format => "xml"
       response.status.should == 403
       response.body.should be_blank
-      flash[:notice].should be_nil
+      flash[:alert].should be_nil
     end
   end
   
@@ -41,7 +41,7 @@ describe DummyBetaController do
       get :index, :format => "json"
       response.status.should == 401
       response.body.should be_blank
-      flash[:notice].should be_nil
+      flash[:alert].should be_nil
     end
   
     it "should not set the flash and should return a blank body with a 403 code when unauthorized" do
@@ -49,7 +49,7 @@ describe DummyBetaController do
       get :index, :format => "json"
       response.status.should == 403
       response.body.should be_blank
-      flash[:notice].should be_nil
+      flash[:alert].should be_nil
     end
   end
   
@@ -59,7 +59,7 @@ describe DummyBetaController do
       xhr :get, :index, :format => "js"
       response.status.should == 401
       response.body.should be_blank
-      flash[:notice].should be_nil
+      flash[:alert].should be_nil
     end
   
     it "should not set the flash and should return a blank body with a 403 code when unauthorized" do
@@ -67,7 +67,7 @@ describe DummyBetaController do
       xhr :get, :index, :format => "js"
       response.status.should == 403
       response.body.should be_blank
-      flash[:notice].should be_nil
+      flash[:alert].should be_nil
     end
   end
   

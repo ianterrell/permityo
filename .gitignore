@@ -19,9 +19,9 @@ rdoc
 pkg
 doc
 .yardoc
+Gemfile.lock
 
 ## PROJECT::SPECIFIC
-*.gemspec
 
 .bundle/
 log/*.log

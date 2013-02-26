@@ -11,7 +11,7 @@ describe DummyController do
   
   it "should not allow dogooders to do evil" do
     get :do_evil
-    flash[:notice].should == "Permission denied. You cannot access the requested page."
+    flash[:alert].should == "Permission denied. You cannot access the requested page."
     response.should redirect_to(Rails.application.config.permit_yo.permission_denied_redirection)
   end
   
@@ -20,4 +20,11 @@ describe DummyController do
     DummyController.new.permit?("owner of :group", :user => @user, :group => @group).should be_true
     DummyController.new.permit?("owner of :group", :user => User.new, :group => @group).should be_false
   end
+  it "should use instance variables if there" do
+    get :have_instance_variables
+    response.should be_success
+    response.body.should == "done!"
+  end
+
+
 end
