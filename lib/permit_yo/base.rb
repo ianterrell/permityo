@@ -145,7 +145,7 @@ module PermitYo
           model_symbol = model_name.to_sym
           if @options[model_symbol]
             @options[model_symbol]
-          elsif instance_variables.include?('@'+model_name)
+          elsif instance_variable_names.include?('@'+model_name)
             instance_variable_get('@'+model_name)
           elsif respond_to?(model_symbol)
             send(model_symbol)
