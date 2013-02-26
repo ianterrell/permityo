@@ -12,5 +12,5 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency "rspec-rails", "~> 2.13.0"
   gem.add_development_dependency "rdoc"
   gem.add_runtime_dependency 'activesupport', '~> 3.0'
-  gem.version = "2.1.3"
+  gem.version = "2.1.4"
 end
